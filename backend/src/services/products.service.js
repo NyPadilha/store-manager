@@ -3,7 +3,7 @@ const { productsModel } = require('../models');
 const getProducts = async () => {
     const products = await productsModel.getProducts();
 
-    if (!products) {
+    if (products.length < 1) {
         return {
             status: 'NOT_FOUND',
             data: {
