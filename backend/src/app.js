@@ -6,6 +6,8 @@ const {
 
 const app = express();
 
+// POSSUIDO
+
 app.use(express.json());
 app.use('/products', productsRouter);
 app.use('/sales', salesRouter);
