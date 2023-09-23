@@ -1,5 +1,5 @@
 const connection = require('./connection');
-const { formatPlaceholder, formatColumns } = require('../utils/formatQuery');
+const { formatPlaceholder, formatColumns, formatUpdate } = require('../utils/formatQuery');
 
 const getProducts = async () => {
     const [products] = await connection.execute('SELECT * FROM products');
@@ -12,16 +12,23 @@ const getProductByID = async (id) => {
 };
 
 const addProduct = async (product) => {
-    const collumns = formatColumns(product);
+    const columns = formatColumns(product);
     const placeholders = formatPlaceholder(product);
     const values = Object.values(product);
-    const query = `INSERT INTO products (${collumns}) VALUES (${placeholders})`;
+    const query = `INSERT INTO products (${columns}) VALUES (${placeholders})`;
     const [{ insertId }] = await connection.execute(query, values);
     return insertId;
+};
+
+const updateProduct = async (id, product) => {
+    const columns = formatUpdate(product);
+    const values = [...Object.values(product), id];
+    return connection.execute(`UPDATE products SET ${columns} WHERE id = ?`, values);
 };
 
 module.exports = {
     getProducts,
     getProductByID,
     addProduct,
+    updateProduct,
 };

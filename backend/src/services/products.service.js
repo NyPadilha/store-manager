@@ -42,8 +42,29 @@ const addProduct = async (product) => {
     return { status: 'CREATED', data: getNewProduct };
 };
 
+const updateProduct = async (id, product) => {
+    if (product.name.length < 5) {
+        return {
+            status: 'INVALID_VALUE',
+            data: { message: '"name" length must be at least 5 characters long' },
+        };
+    }
+    const productValidation = await productsModel.getProductByID(id);
+    if (!productValidation) {
+        return {
+            status: 'NOT_FOUND',
+            data: { message: 'Product not found' },
+        };
+    }
+
+    await productsModel.updateProduct(id, product);
+    const getUpdatedProduct = await productsModel.getProductByID(id);
+    return { status: 'SUCCESSFUL', data: getUpdatedProduct };
+};
+
 module.exports = {
     getProducts,
     getProductByID,
     addProduct,
+    updateProduct,
 };
