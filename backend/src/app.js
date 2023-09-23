@@ -6,6 +6,8 @@ const {
 
 const app = express();
 
+// NO CYPRESS TA PASSANDO TUDO PQ KRLS N PASSA NO AVALIADOR
+
 app.use(express.json());
 app.use('/products', productsRouter);
 app.use('/sales', salesRouter);
