@@ -1,8 +1,8 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
-const productsModel = require('../../../src/models/products.model');
-const { allProducts, productByID } = require('../../mocks/products.model.mock');
+const { productsModel } = require('../../../src/models');
+const { allProducts, productByID, insertId, expectedInsertId } = require('../../mocks/products.model.mock');
 
 describe('Products model test', function () {
     it('Should get all products', async function () {
@@ -22,6 +22,16 @@ describe('Products model test', function () {
         expect(product).to.be.an('object');
         expect(product).to.deep.equal(productByID);
     });
+    it('Should create a product', async function () {
+        sinon.stub(connection, 'execute').resolves([insertId]);
+
+        const inputData = { name: 'Jaguara' };
+        const product = await productsModel.addProduct(inputData);
+
+        expect(product).to.be.a('number');
+        expect(product).to.equal(expectedInsertId);
+    });
+
     afterEach(function () {
         sinon.restore();
     });

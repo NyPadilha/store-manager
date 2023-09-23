@@ -9,7 +9,21 @@ const productByID = {
   name: 'Escudo do Capitão América',
 };
 
+const insertId = {
+  insertId: 76,
+};
+
+const expectedInsertId = 76;
+
+const allProductsController = { status: 'SUCCESSFUL', data: allProducts };
+
+const productByIDController = { status: 'SUCCESSFUL', data: productByID };
+
 module.exports = {
   allProducts,
   productByID,
+  insertId,
+  expectedInsertId,
+  allProductsController,
+  productByIDController,
 };

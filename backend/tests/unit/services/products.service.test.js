@@ -2,9 +2,9 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { productsModel } = require('../../../src/models');
 const { productsService } = require('../../../src/services');
-const { allProducts, productByID } = require('../../mocks/products.model.mock');
+const { allProducts, productByID, insertId, expectedInsertId } = require('../../mocks/products.model.mock');
 
-describe('Products model test', function () {
+describe('Products service test', function () {
     it('Should get all products', async function () {
         sinon.stub(productsModel, 'getProducts').resolves(allProducts);
 
@@ -39,6 +39,25 @@ describe('Products model test', function () {
         expect(serviceResponse.status).to.equal('NOT_FOUND');
         expect(serviceResponse.data).to.be.deep.equal({ message: 'Product not found' });
     });
+    it('Return CREATED when create a product', async function () {
+        sinon.stub(productsModel, 'addProduct').resolves(insertId);
+        sinon.stub(productsModel, 'getProductByID').resolves(expectedInsertId);
+
+        const inputData = { name: 'Jaguara' };
+        const serviceResponse = await productsService.addProduct(inputData);
+
+        expect(serviceResponse.status).to.equal('CREATED');
+        expect(serviceResponse.data).to.be.deep.equal(expectedInsertId);
+    });
+    it('Test Joi validation when create a product', async function () {
+        const inputData = { name: 'Jaka' };
+
+        const serviceResponse = await productsService.addProduct(inputData);
+
+        expect(serviceResponse.status).to.equal('INVALID_VALUE');
+        expect(serviceResponse.data).to.be.deep.equal({ message: '"name" length must be at least 5 characters long' });
+    });
+
     afterEach(function () {
         sinon.restore();
     });
