@@ -14,6 +14,11 @@ const getProductByID = async (req, res) => {
 
 const addProduct = async (req, res) => {
   const newProduct = req.body;
+  if (!newProduct.name) {
+    return res.status(mapStatusHTTP('BAD_REQUEST')).json({
+      message: '"name" is required',
+    });
+  }
   const { status, data } = await productsService.addProduct(newProduct);
   return res.status(mapStatusHTTP(status)).json(data);
 };

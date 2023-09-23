@@ -29,6 +29,14 @@ const getProductByID = async (id) => {
 };
 
 const addProduct = async (product) => {
+    if (product.name.length < 5) {
+        return {
+            status: 'INVALID_VALUE',
+            data: {
+                message: '"name" length must be at least 5 characters long',
+            },
+        };
+    }
     const insertProduct = await productsModel.addProduct(product);
     const getNewProduct = await productsModel.getProductByID(insertProduct);
     return { status: 'CREATED', data: getNewProduct };
