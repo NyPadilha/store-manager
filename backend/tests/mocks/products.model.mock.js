@@ -19,6 +19,20 @@ const allProductsController = { status: 'SUCCESSFUL', data: allProducts };
 
 const productByIDController = { status: 'SUCCESSFUL', data: productByID };
 
+const newProduct = {
+  id: 4,
+  name: 'JaguaraJR',
+};
+
+const addProductController = { status: 'CREATED', data: newProduct };
+
+const updateProduct = {
+  id: 2,
+  name: 'Martelo do cARLOS',
+};
+
+const updateProductController = { status: 'SUCCESSFUL', data: updateProduct };
+
 module.exports = {
   allProducts,
   productByID,
@@ -26,4 +40,8 @@ module.exports = {
   expectedInsertId,
   allProductsController,
   productByIDController,
+  newProduct,
+  addProductController,
+  updateProduct,
+  updateProductController,
 };

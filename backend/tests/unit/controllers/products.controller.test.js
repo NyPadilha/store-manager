@@ -3,7 +3,16 @@ const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 const { productsService } = require('../../../src/services');
 const { productsController } = require('../../../src/controllers');
-const { allProducts, productByID, allProductsController, productByIDController } = require('../../mocks/products.model.mock');
+const { 
+    allProducts, 
+    productByID,
+    allProductsController, 
+    productByIDController,
+    newProduct,
+    updateProduct,
+    updateProductController,
+    addProductController,
+} = require('../../mocks/products.model.mock');
 
 use(sinonChai);
 
@@ -37,5 +46,28 @@ describe('Products controller test', function () {
 
         expect(res.status).to.have.been.calledWith(200);
         expect(res.json).to.have.been.calledWith(productByID);
+    });
+    it('Should add a product', async function () {
+        sinon.stub(productsService, 'addProduct').resolves(addProductController);
+
+        const req = {
+            body: { name: 'JaguaraJR' },
+        };
+        await productsController.addProduct(req, res);
+
+        expect(res.status).to.have.been.calledWith(201);
+        expect(res.json).to.have.been.calledWith(newProduct);
+    });
+    it('Should update a product', async function () {
+        sinon.stub(productsService, 'updateProduct').resolves(updateProductController);
+
+        const req = {
+            params: { id: 2 },
+            body: { name: 'Martelo do cARLOS' },
+        };
+        await productsController.updateProduct(req, res);
+
+        expect(res.status).to.have.been.calledWith(200);
+        expect(res.json).to.have.been.calledWith(updateProduct);
     });
 });

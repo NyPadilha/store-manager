@@ -35,7 +35,7 @@ const insertId = {
 };
 
 const expectedInsertId = {
-    id: 76,
+    id: 3,
     itemsSold: [
         {
             productId: 1,

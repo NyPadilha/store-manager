@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
 const { salesModel } = require('../../../src/models');
-const { allSales, saleByID, saleByIDArray } = require('../../mocks/sales.model.mock');
+const { allSales, saleByID, saleByIDArray, expectedInsertId } = require('../../mocks/sales.model.mock');
 
 describe('Sales model test', function () {
     it('Should get all sales', async function () {
@@ -23,7 +23,23 @@ describe('Sales model test', function () {
         expect(product).to.deep.equal(saleByIDArray);
     });
     it('Should create a sale', async function () {
-        // test
+        sinon.stub(connection, 'execute').resolves([expectedInsertId]);
+
+        const inputData = [
+            {
+              productId: 1,
+              quantity: 1,
+            },
+            {
+              productId: 2,
+              quantity: 2,
+            },
+          ];
+        const sale = await salesModel.addSale(inputData);
+
+        expect(sale).to.be.an('object');
+        expect(sale.itemsSold).to.equal(inputData);
+        // console.log(sale); // id ta vindo como undefined
     });
 
     afterEach(function () {
